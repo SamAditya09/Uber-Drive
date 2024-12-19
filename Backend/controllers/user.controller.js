@@ -9,7 +9,7 @@ module.exports.registerUer = async (req, res, next) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { fullName, email, password } = req.body;
+  const { fullname, email, password } = req.body;
 
   const existingUser = await userModel.findOne({ email });
 
@@ -19,8 +19,8 @@ module.exports.registerUer = async (req, res, next) => {
 
   const hashPassword = await userModel.hashPassword(password);
   const user = await userService.createUser({
-    firstName: fullName.firstName,
-    lastName: fullName.lastName,
+    firstname: fullname.firstname,
+    lastname: fullname.lastname,
     email,
     password: hashPassword ,
   });
