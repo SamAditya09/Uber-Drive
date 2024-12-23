@@ -6,7 +6,6 @@ import axios from "axios";
 const UserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userData, setUserData] = useState({});
 
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserDataContext);
@@ -17,7 +16,7 @@ const UserLogin = () => {
       email: email,
       password: password,
     };
-
+    
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/users/login`,

@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home.jsx";
 import CaptainSignup from "./pages/CaptainSignup.jsx";
 import UserLogin from "./pages/UserLogin.jsx";
 import UserLogout from "./pages/UserLogout.jsx";
@@ -11,6 +10,7 @@ import UserProtectedWrapper from "./pages/UserProtectedWrapper";
 import CaptainHome from "./pages/CaptainHome.jsx";
 import CaptainLogout from "./pages/CaptainLogout.jsx";
 import CaptainProtectedWrapper from "./pages/CaptainProtectedWrapper.jsx";
+import Home from "./pages/Home.jsx";
 
 const App = () => {
   return (
@@ -20,15 +20,14 @@ const App = () => {
       <Route path="/signup" element={<UserSignup />} />
       <Route path="/captain-signup" element={<CaptainSignup />} />
       <Route path="/captain-login" element={<CaptainLogin />} />
-      {/* <Route
+      <Route
         path="/home"
         element={
           <UserProtectedWrapper>
             <Home />
           </UserProtectedWrapper>
         }
-      /> */}
-      <Route path="/home" element={<Home />} />
+      />
       <Route
         path="/users/logout"
         element={
