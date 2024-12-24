@@ -11,12 +11,14 @@ import CaptainHome from "./pages/CaptainHome.jsx";
 import CaptainLogout from "./pages/CaptainLogout.jsx";
 import CaptainProtectedWrapper from "./pages/CaptainProtectedWrapper.jsx";
 import Home from "./pages/Home.jsx";
+import Riding from "./pages/Riding.jsx";
 
 const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Start />} />
       <Route path="/login" element={<UserLogin />} />
+      <Route path="/riding" element={<Riding />} />
       <Route path="/signup" element={<UserSignup />} />
       <Route path="/captain-signup" element={<CaptainSignup />} />
       <Route path="/captain-login" element={<CaptainLogin />} />
