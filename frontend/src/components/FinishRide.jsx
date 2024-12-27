@@ -53,7 +53,7 @@ const FinishRide = (props) => {
             to="/captain-riding"
             className="flex justify-center mt-4 p-3 font-semibold text-lg rounded-lg bg-green-500"
           >
-            Complete Ride
+            Finish Ride
           </Link>
         </div>
       </div>
