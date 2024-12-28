@@ -16,10 +16,11 @@ module.exports.getCoordinates = async (req, res, next) => {
   }
 };
 
-module.exports.getDistanceTime = async (req, res) => {
+
+module.exports.getDistance = async (req, res) => {
   try {
       const { origin, destination } = req.query;
-      const result = await mapService.getDistanceTime(origin, destination);
+      const result = await mapService.getDistance(origin, destination);
       res.status(200).send(result);
   } catch (error) {
       console.error("Error in getDistanceTime:", error.message);

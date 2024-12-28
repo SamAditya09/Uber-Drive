@@ -12,7 +12,7 @@ router.get('/get-coordinates',
 router.get('/get-distance-time', 
     query('origin').isString().isLength({min:3}),
     query('destination').isString().isLength({min:3}),
-    authMiddleware.authUser, mapController.getDistanceTime
+    authMiddleware.authUser, mapController.getDistance
 );
 
 router.get('/get-suggestions',
