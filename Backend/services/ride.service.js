@@ -12,20 +12,20 @@ async function getFare(pickup, destination) {
         console.log("Distance and time details:", distanceTime);
 
         const baseFare = {
-            auto: 30,
-            car: 50,
+            auto: 15,
+            car: 30,
             motorcycle: 20,
         };
 
         const perKmRate = {
-            auto: 10,
-            car: 15,
+            auto: 8,
+            car: 10,
             motorcycle: 5,
         };
 
         const perMinRate = {
-            auto: 5,
-            car: 8,
+            auto: 4,
+            car: 5,
             motorcycle: 3,
         };
 
@@ -49,8 +49,9 @@ async function getFare(pickup, destination) {
         console.error("Error in getFare:", error.message);
         throw new Error("Failed to calculate fare due to an issue with map service");
     }
-    return fare;
 }
+
+module.exports.getFare = getFare;
 
 function getOtp(num) {
     function generateOtp(num) {
