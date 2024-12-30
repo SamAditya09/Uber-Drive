@@ -1,7 +1,7 @@
 import React from 'react'
 
 const VehiclePanel = (props) => {
-  console.log("VehiclePanel props.fare:", props.fare.car);
+
   return (
     <div>
         <h5 className="text-2xl cursor-pointer text-center absolute top-0 p-1 w-full" onClick={() => props.setVehiclePanel(false)}><i class="ri-arrow-down-wide-line"></i></h5>

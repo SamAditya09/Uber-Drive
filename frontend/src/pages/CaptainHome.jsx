@@ -1,18 +1,42 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import CaptainDetails from "./CaptainDetails";
 import RidePopUp from "../components/RidePopUp";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ConfirmRidePopUp from "../components/ConfirmRidePopUp";
+import { SocketContext } from "../context/SocketContext";
+import { CaptainDataContext } from "../context/CaptainContext";
 
 const CaptainHome = () => {
   const [ridePopUpPanel, setRidePopUpPanel] = useState(true);
   const [confirmRidePopPanel, setConfirmRidePopPanel] = useState(false);
 
-
   const ridePopUpPanelRef = useRef(null);
   const confirmRidePopPanelRef = useRef(null);
+
+  const updateLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        socket.emit("update-location-captain", {
+          userId: captain._id,
+          location: {
+            ltd: position.coords.latitude,
+            lng: position.coords.longitude,
+          },
+        });
+      });
+    }
+  };
+
+  const locationInterval = setInterval(updateLocation, 5000);
+
+  const { socket } = useContext(SocketContext);
+  const { captain } = useContext(CaptainDataContext);
+
+  useEffect(() => {
+    socket.emit("join", { userType: "captain", userId: captain._id });
+  });
 
   useGSAP(() => {
     if (ridePopUpPanel) {
@@ -67,13 +91,19 @@ const CaptainHome = () => {
         ref={ridePopUpPanelRef}
         className="fixed w-full z-10 bottom-0 bg-white px-3 py-10 pt-12"
       >
-        <RidePopUp setRidePopUpPanel={setRidePopUpPanel} setConfirmRidePopPanel={setConfirmRidePopPanel} />
+        <RidePopUp
+          setRidePopUpPanel={setRidePopUpPanel}
+          setConfirmRidePopPanel={setConfirmRidePopPanel}
+        />
       </div>
       <div
         ref={confirmRidePopPanelRef}
         className="fixed w-full h-screen z-10 bottom-0 bg-white px-3 py-10 pt-12"
       >
-        <ConfirmRidePopUp setConfirmRidePopPanel={setConfirmRidePopPanel} setRidePopUpPanel={setRidePopUpPanel} />
+        <ConfirmRidePopUp
+          setConfirmRidePopPanel={setConfirmRidePopPanel}
+          setRidePopUpPanel={setRidePopUpPanel}
+        />
       </div>
     </div>
   );

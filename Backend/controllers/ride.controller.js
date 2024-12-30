@@ -1,4 +1,5 @@
 const rideService = require("../services/ride.service");
+const mapService = require("../services/map.service");
 const { validationResult } = require("express-validator");
 
 module.exports.createRide = async (req, res) => {
@@ -16,6 +17,8 @@ module.exports.createRide = async (req, res) => {
       vehicleType,
     });
     return res.status(201).json({ ride });
+
+    
   } catch (error) {
     console.error("Error in createRide controller:", error);
     return res.status(500).json({ error: error.message });
