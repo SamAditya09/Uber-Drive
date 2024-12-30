@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router";
 import CaptainSignup from "./pages/CaptainSignup.jsx";
 import UserLogin from "./pages/UserLogin.jsx";
 import UserLogout from "./pages/UserLogout.jsx";

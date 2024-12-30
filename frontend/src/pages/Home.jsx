@@ -260,11 +260,11 @@ const Home = () => {
         className="fixed w-full z-10 bottom-0 bg-white px-3 py-6"
       >
         <ConfirmedRide
-        createRide={createRide}
-        pickup={pickup}
-        destination={destination}
-        fare={fare}
-        vehicleType={vehicleType}
+          createRide={createRide}
+          pickup={pickup}
+          destination={destination}
+          fare={fare}
+          vehicleType={vehicleType}
           setConfirmedRidePanel={setConfirmedRidePanel}
           setVehicleFound={setVehicleFound}
         />
@@ -273,7 +273,14 @@ const Home = () => {
         ref={vehicleFoundRef}
         className="fixed w-full z-10 bottom-0 bg-white px-3 py-6"
       >
-        <LookingForDriver setVehicleFound={setVehicleFound} />
+        <LookingForDriver
+          createRide={createRide}
+          pickup={pickup}
+          destination={destination}
+          fare={fare}
+          vehicleType={vehicleType}
+          setVehicleFound={setVehicleFound}
+        />
       </div>
       <div
         ref={waitingForDriverRef}
