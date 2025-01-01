@@ -33,7 +33,7 @@ function initializeSocket(server) {
       if(!location || !location.ltd || !location.lng) {
         return socket.emit("error", "Invalid location data");
       }
-      console.log(`User: ${userId} updated location:${location}`);
+      console.log(`User: ${userId} updated location:${location.ltd} ${location.lng}`);
 
       await captainModel.findByIdAndUpdate(userId, { location:{
         ltd: location.ltd,
@@ -46,9 +46,9 @@ function initializeSocket(server) {
   });
 }
 
-function sendMessageToSocketId(socketId, message) {
+function sendMessageToSocketId(socketId, messageObject) {
   if (io) {
-    io.to(socketId).emit("message", message);
+    io.to(socketId).emit(messageObject.event, messageObject.data);
   } else {
     console.log("Socket.io not initialized");
   }

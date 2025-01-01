@@ -10,7 +10,7 @@ module.exports.getAddressCoordinate = async (address) => {
 
     if (response.data.status === "OK" && response.data.results.length > 0) {
       const location = response.data.results[0].geometry.location;
-      return { latitude: location.lat, longitude: location.lng };
+      return { ltd: location.lat, lng: location.lng };
     } else {
       throw new Error("Address not found");
     }
@@ -138,8 +138,8 @@ module.exports.getSuggestions = async (input) => {
   }
 }; // Implement getSuggestions function
 
-module.exports.getCaptainsInTheRadius = async (ltd, lgt, radius) => {
-  if (!ltd || !lgt || !radius) {
+module.exports.getCaptainsInTheRadius = async (ltd, lng, radius) => {
+  if (!ltd || !lng || !radius) {
     throw new Error("Latitude, longitude, and radius are required");
   }
 

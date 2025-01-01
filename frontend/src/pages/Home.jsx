@@ -1,4 +1,4 @@
-import {  useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import axios from "axios";
@@ -22,15 +22,22 @@ const Home = () => {
   const [pickupSuggestions, setPicupSuggestions] = useState([]);
   const [destinationSuggestions, setDestinationSuggestions] = useState([]);
   const [activeField, setActiveField] = useState(null);
-  const [fare, setFare] = useState({car: 0, auto: 0, motorcycle: 0});
+  const [fare, setFare] = useState({ car: 0, auto: 0, motorcycle: 0 });
   const [vehicleType, setVehicleType] = useState(null);
+  const [ride, setRide] = useState(null);
 
-  const {socket} = useContext(SocketContext)
-  const {user} = useContext(UserDataContext)
+  const { socket } = useContext(SocketContext);
+  const { user } = useContext(UserDataContext);
 
   useEffect(() => {
-    socket.emit("join", {userType: "user", userId: user._id})
-  }, [user])
+    socket.emit("join", { userType: "user", userId: user._id });
+  }, [user]);
+
+  socket.on("ride-confirmed", ride => {
+    setVehicleFound(false);
+    setWaitingForDriver(true);
+    setRide(ride);
+  });
 
   const panelRef = useRef(null);
   const vehiclePanelRef = useRef(null);
@@ -161,10 +168,27 @@ const Home = () => {
     );
     console.log(response.data);
 
-    setFare(response.data);
+    setFare(response.data.fare);
   }
+  useEffect(() => {
+    console.log("Component re-rendered"); // Debugging purposes only
+  }, []);
 
+  useEffect(() => {
+    if (vehicleType) {
+      console.log("Vehicle Type selected:", vehicleType);
+    } else {
+      console.log("Vehicle Type is missing or invalid");
+    }
+  }, [vehicleType]);
   async function createRide(vehicleType) {
+    console.log("Vehicle Type Selected in createRide:", vehicleType);
+
+    if (!vehicleType) {
+      console.error("Vehicle Type is missing or invalid");
+      return;
+    }
+
     const response = await axios.post(
       `${import.meta.env.VITE_BASE_URL}/rides/create`,
       {
@@ -178,6 +202,7 @@ const Home = () => {
         },
       }
     );
+    console.log("Ride created successfully:", response.data);
   }
   return (
     <div className="h-screen relative overflow-hidden">
@@ -258,9 +283,9 @@ const Home = () => {
         className="fixed w-full z-10 bottom-0 bg-white px-3 py-6"
       >
         <VehiclePanel
+          setConfirmedRidePanel={setConfirmedRidePanel}
           selectVehicle={setVehicleType}
           fare={fare}
-          setConfirmedRidePanel={setConfirmedRidePanel}
           setVehiclePanel={setVehiclePanel}
         />
       </div>
@@ -295,7 +320,12 @@ const Home = () => {
         ref={waitingForDriverRef}
         className="fixed w-full z-10 bottom-0 bg-white px-3 py-6"
       >
-        <WaitingForDriver waitingForDriver={waitingForDriver} />
+        <WaitingForDriver
+          ride={ride}
+          setWaitingForDriver={setWaitingForDriver}
+          setVehicleFound={setVehicleFound}
+          waitingForDriver={waitingForDriver}
+        />
       </div>
     </div>
   );

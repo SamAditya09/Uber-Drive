@@ -1,6 +1,8 @@
 import React from "react";
 
 const ConfirmedRide = (props) => {
+  console.log("ConfirmedRide vehicleType:", props.vehicleType);
+
   return (
     <div>
       <h5
@@ -43,7 +45,7 @@ const ConfirmedRide = (props) => {
           onClick={() => {
             props.setVehicleFound(true);
             props.setConfirmedRidePanel(false);
-            props.createRide();
+            props.createRide(props.vehicleType);
           }}
           className="w-full mt-4 py-2 font-semibold text-base rounded-lg bg-green-500"
         >
