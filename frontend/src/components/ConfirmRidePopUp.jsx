@@ -1,12 +1,40 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
-
+import axios from "axios";
+import { useNavigate } from "react-router";
 
 const ConfirmRidePopUp = (props) => {
   const [otp, setOtp] = useState("");
+  const navigate = useNavigate();
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
+
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/rides/start-ride`,
+        {
+          params: {
+            rideId: props.ride._id,
+            otp: otp,
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        props.setConfirmRidePopPanel(false);
+        props.setRidePopUpPanel(false);
+        navigate("/captain-riding", {
+          state: {
+            ride: props.ride,
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div>
@@ -26,7 +54,12 @@ const ConfirmRidePopUp = (props) => {
             src="https://img.freepik.com/free-photo/portrait-man-cartoon-style_23-2151134012.jpg"
             alt=""
           />
-          <h2 className="text-lg font-medium">{props.ride?.user.fullname.firstname + " " + props.ride?.user.fullname.lastname + ""}</h2>
+          <h2 className="text-lg font-medium">
+            {props.ride?.user.fullname.firstname +
+              " " +
+              props.ride?.user.fullname.lastname +
+              ""}
+          </h2>
         </div>
         <h5 className="text-lg font-semibold">2.3KM</h5>
       </div>
@@ -55,7 +88,7 @@ const ConfirmRidePopUp = (props) => {
           </div>
         </div>
         <div className="mt-6 w-full">
-          <form onSubmit={(e) => submitHandler(e)}>
+          <form onSubmit={submitHandler}>
             <input
               onChange={(e) => setOtp(e.target.value)}
               value={otp}
@@ -63,12 +96,9 @@ const ConfirmRidePopUp = (props) => {
               placeholder="Enter OTP"
               className="bg-[#eee] px-8 py-2 text-base rounded-lg w-full mt-3"
             />
-            <Link
-              to="/captain-riding"
-              className="flex justify-center mt-4 p-3 font-semibold text-lg rounded-lg bg-green-500"
-            >
+            <button className="w-full flex justify-center mt-4 p-3 font-semibold text-lg rounded-lg bg-green-500">
               Confirm
-            </Link>
+            </button>
             <button
               onClick={() => {
                 props.setConfirmRidePopPanel(false);

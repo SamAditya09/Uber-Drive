@@ -1,13 +1,16 @@
 import React, { useRef, useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import FinishRide from "../components/FinishRide";
+// import LiveTracking from "../components/LiveTracking";
 
 const CaptainRiding = () => {
   const [finishRidePanel, setFinishRidePanel] = useState(false);
 
   const finishRidePanelRef = useRef(null);
+  const location = useLocation();
+  const rideData = location.state?.ride;
 
   useGSAP(() => {
     if (finishRidePanel) {
@@ -21,7 +24,7 @@ const CaptainRiding = () => {
     }
   }, [finishRidePanel]);
   return (
-    <div className="h-screen overflow-hidden relative">
+    <div className="h-screen relative flex flex-col justify-end">
       <div className="fixed flex items-center justify-between w-full p-6">
         <img
           className="w-16"
@@ -29,18 +32,11 @@ const CaptainRiding = () => {
           alt="logo"
         />
         <Link
-          to={"/captains/logout"}
+          to={"/captain-home"}
           className="h-10 w-10 flex items-center justify-center bg-white rounded-full shadow-md"
         >
           <i className="text-lg font-medium ri-logout-box-r-line"></i>
         </Link>
-      </div>
-      <div className="h-4/5">
-        <img
-          className="h-full w-full object-cover"
-          src="https://s.wsj.net/public/resources/images/BN-XR453_201802_M_20180228165619.gif"
-          alt="image"
-        />
       </div>
       <div className="h-1/5 p-6 flex items-center justify-between bg-yellow-400"
       onClick={() => setFinishRidePanel(true)}
@@ -57,8 +53,13 @@ const CaptainRiding = () => {
         ref={finishRidePanelRef}
         className="fixed w-full z-10 bottom-0 bg-white px-3 py-10 pt-12"
       >
-        <FinishRide setFinishRidePanel={setFinishRidePanel}  />
+        <FinishRide
+        ride={rideData}
+         setFinishRidePanel={setFinishRidePanel}  />
       </div>
+      {/* <div className="h-screen fixed w-screen top-0">
+        <LiveTracking />
+      </div> */}
     </div>
   );
 };

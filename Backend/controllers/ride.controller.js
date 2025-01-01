@@ -82,3 +82,45 @@ module.exports.confirmedRide = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 }
+
+module.exports.startRide = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  const { rideId, otp } = req.query;
+
+  try {
+    const ride = await rideService.startRide({rideId, otp, captain: req.captain});
+    sendMessageToSocketId(ride.user.socketId, {
+      event: "ride-started",
+      data: ride
+    })
+    return res.status(200).json({ ride });
+  } catch (error) {
+    console.error("Error in startRide controller:", error);
+    return res.status(500).json({ error: error.message });
+  }
+}
+
+module.exports.endRide = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  const { rideId } = req.body;
+
+  try {
+    const ride = await rideService.endRide({rideId, captain: req.captain});
+
+    sendMessageToSocketId(ride.user.socketId, {
+      event: "ride-ended",
+      data: ride
+    })
+
+    return res.status(200).json({ ride });
+  } catch (error) {
+    console.error("Error in endRide controller:", error);
+    return res.status(500).json({ error: error.message });
+  }
+}

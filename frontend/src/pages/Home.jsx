@@ -10,6 +10,8 @@ import LookingForDriver from "../components/LookingForDriver";
 import WaitingForDriver from "../components/WaitingForDriver";
 import { SocketContext } from "../context/SocketContext";
 import { UserDataContext } from "../context/UserContext";
+import { useNavigate } from "react-router";
+import LiveTracking from "../components/LiveTracking";
 
 const Home = () => {
   const [pickup, setPickup] = useState("");
@@ -25,6 +27,7 @@ const Home = () => {
   const [fare, setFare] = useState({ car: 0, auto: 0, motorcycle: 0 });
   const [vehicleType, setVehicleType] = useState(null);
   const [ride, setRide] = useState(null);
+  const navigate = useNavigate();
 
   const { socket } = useContext(SocketContext);
   const { user } = useContext(UserDataContext);
@@ -33,10 +36,19 @@ const Home = () => {
     socket.emit("join", { userType: "user", userId: user._id });
   }, [user]);
 
-  socket.on("ride-confirmed", ride => {
+  socket.on("ride-confirmed", (ride) => {
     setVehicleFound(false);
     setWaitingForDriver(true);
     setRide(ride);
+  });
+
+  socket.on("ride-started", (ride) => {
+    setWaitingForDriver(false);
+    navigate("/riding", {
+      state: {
+        ride,
+      },
+    });
   });
 
   const panelRef = useRef(null);
@@ -212,11 +224,7 @@ const Home = () => {
         alt=""
       />
       <div className="h-screen w-screen">
-        <img
-          className="h-full w-full object-cover"
-          src="https://cdn.theatlantic.com/thumbor/BlEOtTo9L9mjMLuyCcjG3xYr4qE=/0x48:1231x740/960x540/media/img/mt/2017/04/IMG_7105/original.png"
-          alt="image"
-        />
+        <LiveTracking />
       </div>
       <div className="flex flex-col justify-end h-screen absolute top-0 w-full">
         <div className="h-[30%] bg-white p-5 relative">
