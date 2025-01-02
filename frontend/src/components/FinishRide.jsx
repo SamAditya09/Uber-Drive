@@ -9,7 +9,7 @@ const navigate = useNavigate();
   async function endRide() {
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/rides/end-ride}`,{
+        `${import.meta.env.VITE_BASE_URL}/rides/end-ride`,{
           rideId: props.ride._id
         },
         {

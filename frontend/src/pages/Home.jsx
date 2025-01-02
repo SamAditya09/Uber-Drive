@@ -11,7 +11,6 @@ import WaitingForDriver from "../components/WaitingForDriver";
 import { SocketContext } from "../context/SocketContext";
 import { UserDataContext } from "../context/UserContext";
 import { useNavigate } from "react-router";
-import LiveTracking from "../components/LiveTracking";
 
 const Home = () => {
   const [pickup, setPickup] = useState("");
@@ -224,7 +223,11 @@ const Home = () => {
         alt=""
       />
       <div className="h-screen w-screen">
-        <LiveTracking />
+      <img
+          className="h-full w-full object-cover"
+          src="https://s.wsj.net/public/resources/images/BN-XR453_201802_M_20180228165619.gif"
+          alt="image"
+        />
       </div>
       <div className="flex flex-col justify-end h-screen absolute top-0 w-full">
         <div className="h-[30%] bg-white p-5 relative">
